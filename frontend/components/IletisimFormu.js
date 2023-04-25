@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import Goruntule from './Goruntule';
+import Goruntule from "./Goruntule";
 
 const formData = {
   ad: "",
   soyad: "",
   email: "",
-  mesaj: ""
+  mesaj: "",
 };
 
 const errorData = {
   ad: "",
   soyad: "",
   email: "",
-  mesaj: ""
+  mesaj: "",
 };
 
 const IletisimFormu = () => {
@@ -21,8 +21,8 @@ const IletisimFormu = () => {
   const [errors, setErrors] = useState(errorData);
 
   const errorHandling = (fieldName, fieldValue) => {
-    if (fieldName === "ad" && fieldValue.length < 5)
-      return `${fieldName} en az 5 karakter olmalıdır.`;
+    if (fieldName === "ad" && fieldValue.length < 3)
+      return `${fieldName} en az 3 karakter olmalıdır.`;
 
     const emailRegex = /(.*)@(.*)\.(.+)/g;
     if (fieldName === "email" && !fieldValue.match(emailRegex))
@@ -34,20 +34,22 @@ const IletisimFormu = () => {
     return "";
   };
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const submitErrors = {};
-    Object.keys(errors).forEach(field => {
+    Object.keys(errors).forEach((field) => {
       submitErrors[field] = errorHandling(field, form[field]);
     });
 
     setErrors(submitErrors);
 
-    const hasErrors = (submitErrors.ad === "" && submitErrors.soyad === "" && submitErrors.email === "" && submitErrors.mesaj === "");
+    const hasErrors =
+      submitErrors.ad === "" &&
+      submitErrors.soyad === "" &&
+      submitErrors.email === "" &&
+      submitErrors.mesaj === "";
     setDisplayData(hasErrors);
-
   };
 
   const handleChange = (e) => {
@@ -59,12 +61,12 @@ const IletisimFormu = () => {
 
     setErrors({
       ...errors,
-      [e.target.name]: errorMessage
+      [e.target.name]: errorMessage,
     });
 
     setForm({
       ...form,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -79,9 +81,9 @@ const IletisimFormu = () => {
             name="ad"
             value={form.ad}
             id="ad"
-            placeholder="İlhan"
+            placeholder="salim"
           />
-          {(errors.ad) && <p data-testid="error">Hata: {errors.ad}</p>}
+          {errors.ad && <p data-testid="error-name">Hata: {errors.ad}</p>}
         </div>
 
         <div>
@@ -91,9 +93,11 @@ const IletisimFormu = () => {
             id="soyad"
             name="soyad"
             value={form.soyad}
-            placeholder="Mansız"
+            placeholder="cobanoglu"
           />
-          {(errors.soyad) && <p data-testid="error">Hata: {errors.soyad}</p>}
+          {errors.soyad && (
+            <p data-testid="error-surname">Hata: {errors.soyad}</p>
+          )}
         </div>
 
         <div>
@@ -103,9 +107,11 @@ const IletisimFormu = () => {
             id="email"
             name="email"
             value={form.email}
-            placeholder="yüzyılıngolcüsü@hotmail.com"
+            placeholder="workintech@hotmail.com"
           />
-          {(errors.email) && <p data-testid="error">Hata: {errors.email}</p>}
+          {errors.email && (
+            <p data-testid="error-email">Hata: {errors.email}</p>
+          )}
         </div>
 
         <div>
@@ -116,12 +122,14 @@ const IletisimFormu = () => {
             id="mesaj"
             value={form.mesaj}
           />
-          {(errors.mesaj) && <p data-testid="error">Error: {errors.mesaj}</p>}
+          {errors.mesaj && (
+            <p data-testid="error-message">Error: {errors.mesaj}</p>
+          )}
         </div>
 
-        {displayData && <Goruntule form={form}/>}
+        {displayData && <Goruntule form={form} />}
 
-        <button>Gönder</button>
+        <button data-testid="submit-button">Gönder</button>
       </form>
     </div>
   );
